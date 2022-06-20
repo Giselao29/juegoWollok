@@ -1,0 +1,9 @@
+
+import wollok.game.*
+import juegoGato.*
+
+program juegoGato{
+	juego.configurar()
+	juego.iniciar()
+	game.start()
+}
