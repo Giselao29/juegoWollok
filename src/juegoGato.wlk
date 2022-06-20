@@ -12,17 +12,19 @@ object juego{
 	  game.boardGround("pasteleriaFinal.jpg")
 	  game.title("Cathambre")
 	  game.addVisualCharacter(gato)
-	  //game.addVisual(pizza)
+	  game.addVisual(pizza)
+	  game.addVisual(pez)
 	  keyboard.left().onPressDo{gato.moverIzquierda()}
 	  keyboard.right().onPressDo{gato.moverDerecha()}
-	  game.onTick(2000, "aparecerComida", {self.aparecerComida()})
+	  //game.onTick(2000, "aparecerComida", {self.aparecerComida()})
 	}
 	
 	method iniciar(){
-	  //pizza.iniciar()	
+	  pizza.iniciar()
+	  pez.iniciar()	
 	}
 	
-	
+	/* 
 	method aparecerComida(){
 		
 		const vel=[100,200,300].anyOne()
@@ -37,6 +39,7 @@ object juego{
 			)
 		)
 	}	
+	*/
 }	
 
 
@@ -77,10 +80,10 @@ class Comida{
 	
 	var property valor=10
 	var property velocidad=100
-	var property x=1
+	var property x
 	var position=self.posicionInicial()
 	
-	method image() = "comida"+valor+".png"
+	//method image() = "comida"+valor+".png"
 	
 	
 	method posicionInicial()=game.at(x,game.height()-1)
@@ -92,9 +95,9 @@ class Comida{
 	method position(nueva){	
 		position=nueva
 	}
-	
+	/* 
 	method variarVelocidad(){
-		velocidad=velocidad+50.randomUpTo(300)
+	velocidad=velocidad+50.randomUpTo(300)
 	}
 	
 	method velocidad(){
@@ -104,7 +107,7 @@ class Comida{
 	method velocidad(nueva){
 		velocidad=nueva
 	}
-	
+	*/
 	method iniciar(){
 		position = self.posicionInicial()
 		game.onTick(velocidad,"moverPizza",{self.mover()})
@@ -116,6 +119,18 @@ class Comida{
 			position = self.posicionInicial()
 	}
 
+}
+
+object armarComidas{
+	
+}
+
+object pizza inherits Comida(valor=10,velocidad=[50,100,150].anyOne(),x=(0..game.width()-1).anyOne()){
+	method image() = "comida10.png"
+}
+
+object pez inherits Comida(valor=20,velocidad=[50,100,150].anyOne(),x=(0..game.width()-1).anyOne()){
+	method image() = "comida20.png"
 }
 
 
