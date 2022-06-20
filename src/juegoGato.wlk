@@ -24,6 +24,7 @@ object juego{
 	  pez.iniciar()	
 	}
 	
+	
 	/* 
 	method aparecerComida(){
 		
@@ -78,15 +79,16 @@ object gato{
 
 class Comida{
 	
-	var property valor=10
-	var property velocidad=100
-	var property x
+	var property valor
+	var property velocidad
+	var x
 	var position=self.posicionInicial()
 	
 	//method image() = "comida"+valor+".png"
 	
 	
 	method posicionInicial()=game.at(x,game.height()-1)
+	
 	
 	method position(){
 		return position
@@ -95,7 +97,7 @@ class Comida{
 	method position(nueva){	
 		position=nueva
 	}
-	/* 
+	 
 	method variarVelocidad(){
 	velocidad=velocidad+50.randomUpTo(300)
 	}
@@ -107,7 +109,7 @@ class Comida{
 	method velocidad(nueva){
 		velocidad=nueva
 	}
-	*/
+	
 	method iniciar(){
 		position = self.posicionInicial()
 		game.onTick(velocidad,"moverPizza",{self.mover()})
@@ -115,8 +117,10 @@ class Comida{
 	
 	method mover(){
 		position = position.down(1)
-		if (position.y() == -1)
+		if (position.y() == -1){
+			x=(0..game.width()-1).anyOne()
 			position = self.posicionInicial()
+			}
 	}
 
 }
