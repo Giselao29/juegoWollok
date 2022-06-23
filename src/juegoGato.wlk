@@ -14,6 +14,7 @@ object juego{
 	  game.addVisualCharacter(gato)
 	  game.addVisual(pizza)
 	  game.addVisual(pez)
+	  game.addVisual(puntaje)
 	  keyboard.left().onPressDo{gato.moverIzquierda()}
 	  keyboard.right().onPressDo{gato.moverDerecha()}
 	  //game.onTick(2000, "aparecerComida", {self.aparecerComida()})
@@ -22,7 +23,7 @@ object juego{
 	
 	method iniciar(){
 	  pizza.iniciar()
-	  pez.iniciar()	
+	  pez.iniciar()
 	}
 	
 	
@@ -48,7 +49,6 @@ object juego{
 
 object gato{
 	
-	var puntaje = 0
 	var position = game.at(3,0)
 	method image()="aburrido.png"
 	
@@ -79,20 +79,23 @@ object gato{
 	
 	method comer(){
 		game.say(self,"Que rico")
-		self.sumarPuntaje()
-	//	throw new Exception(message = self.puntaje())
-		
+		puntaje.sumarPuntos()
 	}
-	
-	method puntaje(){
-		return puntaje
-	}
-	
-	method sumarPuntaje(){
-		puntaje = puntaje + 50
-	}
-}
+}	
 
+
+object puntaje{
+	var puntos = 0
+	method image()="estrella.png"
+	method position() = game.at(13, 10)
+	method sumarPuntos(){
+		puntos = puntos + 50
+	}
+	method puntosTotales(){
+		return puntos
+	}
+	method text() = puntos.toString()
+}
 
 class Comida{
 	
