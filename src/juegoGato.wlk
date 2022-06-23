@@ -17,6 +17,7 @@ object juego{
 	  keyboard.left().onPressDo{gato.moverIzquierda()}
 	  keyboard.right().onPressDo{gato.moverDerecha()}
 	  //game.onTick(2000, "aparecerComida", {self.aparecerComida()})
+	  game.onCollideDo(gato,{comida => gato.comer()})
 	}
 	
 	method iniciar(){
@@ -47,6 +48,7 @@ object juego{
 
 object gato{
 	
+	var puntaje = 0
 	var position = game.at(3,0)
 	method image()="aburrido.png"
 	
@@ -73,6 +75,21 @@ object gato{
 	
 	method position(nueva){
 		position=nueva
+	}
+	
+	method comer(){
+		game.say(self,"Que rico")
+		self.sumarPuntaje()
+	//	throw new Exception(message = self.puntaje())
+		
+	}
+	
+	method puntaje(){
+		return puntaje
+	}
+	
+	method sumarPuntaje(){
+		puntaje = puntaje + 50
 	}
 }
 
@@ -122,6 +139,7 @@ class Comida{
 			position = self.posicionInicial()
 			}
 	}
+	
 
 }
 
