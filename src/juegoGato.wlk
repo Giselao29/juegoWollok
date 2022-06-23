@@ -4,7 +4,7 @@ import wollok.game.*
 object juego{
 	
 	method configurar(){
-	
+	 
 	
 	  game.width(17)
 	  game.height(12)
