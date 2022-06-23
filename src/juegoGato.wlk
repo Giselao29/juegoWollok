@@ -71,7 +71,7 @@ object gato{
 	
 	method position(){
 		return position
-	}
+	} 
 	
 	method position(nueva){
 		position=nueva
