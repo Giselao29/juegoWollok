@@ -81,7 +81,7 @@ class Comida{
 	
 	var property valor
 	var property velocidad
-	var x
+	var property  x
 	var position=self.posicionInicial()
 	
 	//method image() = "comida"+valor+".png"
@@ -99,8 +99,12 @@ class Comida{
 	}
 	 
 	method variarVelocidad(){
-	velocidad=velocidad+50.randomUpTo(300)
+		
+	velocidad=[50,100,150].anyOne()
+	
 	}
+
+	method velocidadInicial()=100
 	
 	method velocidad(){
 		return velocidad
@@ -110,9 +114,10 @@ class Comida{
 		velocidad=nueva
 	}
 	
+	
 	method iniciar(){
 		position = self.posicionInicial()
-		game.onTick(velocidad,"moverPizza",{self.mover()})
+		game.onTick(velocidad,"moverAlimentos",{self.mover()})
 	}
 	
 	method mover(){
@@ -120,6 +125,7 @@ class Comida{
 		if (position.y() == -1){
 			x=(0..game.width()-1).anyOne()
 			position = self.posicionInicial()
+			
 			}
 	}
 
