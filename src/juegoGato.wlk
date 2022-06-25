@@ -4,52 +4,59 @@ import wollok.game.*
 object juego{
 	
 	method configurar(){
-	
+	 
 	
 	  game.width(17)
 	  game.height(12)
 	  game.cellSize(50)
 	  game.boardGround("pasteleriaFinal.jpg")
 	  game.title("Cathambre")
+	  game.addVisual(fondo)
 	  game.addVisualCharacter(gato)
 	  game.addVisual(pizza)
 	  game.addVisual(pez)
+	  game.addVisual(leche)
+	  game.addVisual(hamburguesa)
+	  game.addVisual(puntaje)
 	  keyboard.left().onPressDo{gato.moverIzquierda()}
 	  keyboard.right().onPressDo{gato.moverDerecha()}
-	  //game.onTick(2000, "aparecerComida", {self.aparecerComida()})
+	  game.onCollideDo(gato,{comida => gato.comer(comida)})
 	}
 	
 	method iniciar(){
 	  pizza.iniciar()
-	  pez.iniciar()	
+	  pez.iniciar()
+	  leche.iniciar()
+	  hamburguesa.iniciar()
 	}
 	
+}
+
+object fondo{
 	
-	/* 
-	method aparecerComida(){
-		
-		const vel=[100,200,300].anyOne()
-		const val=[10,20,50].anyOne()
-		
-		//x=(0..game.width()-1).anyOne()
-		game.addVisual(
-			new Comida(
-			x=(0..game.width()-1).anyOne(),
-			valor=val,
-			velocidad=vel
-			)
-		)
-	}	
-	*/
-}	
+}
 
-
+object gatos{
+	
+	method tipo(puntos){
+			if(puntos>200){
+			return "gatoJugando.png"
+		}else{
+			if(puntos<200 and puntos>=0){
+				return "aburrido.png"
+			}else{
+				return "dolor.png" 
+			}
+		}
+	}
+}
 
 object gato{
 	
-	var position = game.at(3,0)
-	method image()="aburrido.png"
-	
+	var position = game.at(0,0)
+	method image(){
+		return gatos.tipo(puntaje.puntosTotales())
+	}
 	
 	method moverDerecha(){
 		self.derecha()
@@ -60,22 +67,49 @@ object gato{
 	}
 	
 	method derecha() {
-		position = position.right(1)
+		position = position.right(0.5)
 	}
 	
 	method izquierda() {
-		position = position.left(1)
+		position = position.left(-0.5)
 	} 
 	
 	method position(){
-		return position
-	}
+		
+		if (position.x()<16){
+			return position
+		}else{
+			return game.at(15,0)
+		}
+		
+	} 
 	
 	method position(nueva){
 		position=nueva
 	}
-}
+	
+	method comer(comida){
+		
+		const frases=["que rico!","delicioso!","que sabroso!"]
+		game.say(self,frases.anyOne())
+		puntaje.sumarPuntos(comida)
+	}
+	
+}	
 
+
+object puntaje{
+	var puntos = 0
+	method image()="estrella.png"
+	method position() = game.at(13, 10)
+	method sumarPuntos(comida){
+		puntos = puntos + comida.valor()
+	}
+	method puntosTotales(){
+		return puntos
+	}
+	method text() = puntos.toString()
+}
 
 class Comida{
 	
@@ -84,8 +118,7 @@ class Comida{
 	var property  x
 	var position=self.posicionInicial()
 	
-	//method image() = "comida"+valor+".png"
-	
+	method valor() = valor
 	
 	method posicionInicial()=game.at(x,game.height()-1)
 	
@@ -99,12 +132,9 @@ class Comida{
 	}
 	 
 	method variarVelocidad(){
-		
-	velocidad=[50,100,150].anyOne()
-	
-	}
+	velocidad=velocidad+0.00005
+}
 
-	method velocidadInicial()=100
 	
 	method velocidad(){
 		return velocidad
@@ -121,62 +151,34 @@ class Comida{
 	}
 	
 	method mover(){
-		position = position.down(1)
-		if (position.y() == -1){
-			x=(0..game.width()-1).anyOne()
+		
+		position = position.down(velocidad)
+		self.variarVelocidad()
+		if (position.y() < 0){
+			x=(0..(game.width()-1)).anyOne().roundUp(0)
 			position = self.posicionInicial()
 			
 			}
 	}
-
 }
+
 
 object armarComidas{
 	
 }
 
-object pizza inherits Comida(valor=10,velocidad=[50,100,150].anyOne(),x=(0..game.width()-1).anyOne()){
+object pizza inherits Comida(valor=-10,velocidad=0.07,x=((0..(game.width()-1)).anyOne()).roundUp(0)){
 	method image() = "comida10.png"
 }
 
-object pez inherits Comida(valor=20,velocidad=[50,100,150].anyOne(),x=(0..game.width()-1).anyOne()){
+object pez inherits Comida(valor=20,velocidad=0.05,x=((0..(game.width()-1)).anyOne()).roundUp(0)){
 	method image() = "comida20.png"
 }
 
+object leche inherits Comida(valor=50,velocidad=0.03,x=((0..(game.width()-1)).anyOne()).roundUp(0)){
+	method image() = "comida50.png"
+}
 
-/* 
-object pizza{
-	
-	var velocidad=150
-	var position=self.posicionInicial()
-	
-	method image() = "pizza.png"
-	
-	
-	method posicionInicial()=game.at(2,game.height()-1)
-	
-	method variarVelocidad(){
-		velocidad=velocidad+50.randomUpTo(300)
-	}
-	
-	method velocidad(){
-		return velocidad
-	}
-	
-	method velocidad(nueva){
-		velocidad=nueva
-	}
-	
-	method iniciar(){
-		position = self.posicionInicial()
-		game.onTick(velocidad,"moverPizza",{self.mover()})
-	}
-	
-	method mover(){
-		position = position.down(1)
-		if (position.y() == -1)
-			position = self.posicionInicial()
-	}
-		
-} 
- */
+object hamburguesa inherits Comida(valor=-20,velocidad=0.04,x=((0..(game.width()-1)).anyOne()).roundUp(0)){
+	method image() = "comida30.png"
+}
