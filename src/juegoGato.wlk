@@ -18,7 +18,7 @@ object juego{
 	  keyboard.left().onPressDo{gato.moverIzquierda()}
 	  keyboard.right().onPressDo{gato.moverDerecha()}
 	  //game.onTick(2000, "aparecerComida", {self.aparecerComida()})
-	  game.onCollideDo(gato,{comida => gato.comer()})
+	  game.onCollideDo(gato,{comida => gato.comer(comida)})
 	}
 	
 	method iniciar(){
@@ -50,8 +50,9 @@ object juego{
 object gato{
 	
 	var position = game.at(3,0)
-	method image()="aburrido.png"
-	
+	method image(){
+		if (puntaje.puntosTotales()<200){return "aburrido.png"} else {return "gatoJugando.png"}
+	}
 	
 	method moverDerecha(){
 		self.derecha()
@@ -77,9 +78,9 @@ object gato{
 		position=nueva
 	}
 	
-	method comer(){
+	method comer(comida){
 		game.say(self,"Que rico")
-		puntaje.sumarPuntos()
+		puntaje.sumarPuntos(comida)
 	}
 }	
 
@@ -88,8 +89,8 @@ object puntaje{
 	var puntos = 0
 	method image()="estrella.png"
 	method position() = game.at(13, 10)
-	method sumarPuntos(){
-		puntos = puntos + 50
+	method sumarPuntos(comida){
+		puntos = puntos + comida.valor()
 	}
 	method puntosTotales(){
 		return puntos
@@ -107,6 +108,8 @@ class Comida{
 	//method image() = "comida"+valor+".png"
 	
 	
+	method valor() = valor
+	
 	method posicionInicial()=game.at(x,game.height()-1)
 	
 	
@@ -119,7 +122,7 @@ class Comida{
 	}
 	 
 	method variarVelocidad(){
-	velocidad=velocidad+50.randomUpTo(300)
+	velocidad=velocidad+0.00001
 	}
 	
 	method velocidad(){
@@ -136,8 +139,10 @@ class Comida{
 	}
 	
 	method mover(){
-		position = position.down(1)
-		if (position.y() == -1){
+		
+		position = position.down(velocidad)
+		self.variarVelocidad()
+		if (position.y() < 0){
 			x=(0..game.width()-1).anyOne()
 			position = self.posicionInicial()
 			}
@@ -146,15 +151,17 @@ class Comida{
 
 }
 
+class Comidachatarra inherits Comida {}
+
 object armarComidas{
 	
 }
 
-object pizza inherits Comida(valor=10,velocidad=[50,100,150].anyOne(),x=(0..game.width()-1).anyOne()){
+object pizza inherits Comida(valor=10,velocidad=0.1,x=(0..game.width()-1).anyOne()){
 	method image() = "comida10.png"
 }
 
-object pez inherits Comida(valor=20,velocidad=[50,100,150].anyOne(),x=(0..game.width()-1).anyOne()){
+object pez inherits Comida(valor=20,velocidad=0.1,x=(0..game.width()-1).anyOne()){
 	method image() = "comida20.png"
 }
 
