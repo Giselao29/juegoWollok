@@ -3,15 +3,22 @@ import wollok.game.*
 
 object juego{
 	
-	method configurar(){
+	method pantallaInicial(){
+	  game.width(17)
+	  game.height(12)
+	  game.boardGround("pasteleriaFinal.jpg")
+	  game.addVisual(pantallaInicial)
+	  keyboard.s().onPressDo{self.iniciar()}
 	 
-	
+	}
+	method iniciar(){
+	  game.clear()
 	  game.width(17)
 	  game.height(12)
 	  game.cellSize(50)
 	  game.boardGround("pasteleriaFinal.jpg")
 	  game.title("Cathambre")
-	  game.addVisual(fondo)
+	 // game.addVisual(fondo)
 	  game.addVisualCharacter(gato)
 	  game.addVisual(pizza)
 	  game.addVisual(pez)
@@ -21,9 +28,9 @@ object juego{
 	  keyboard.left().onPressDo{gato.moverIzquierda()}
 	  keyboard.right().onPressDo{gato.moverDerecha()}
 	  game.onCollideDo(gato,{comida => gato.comer(comida)})
-	}
 	
-	method iniciar(){
+	
+	
 	  pizza.iniciar()
 	  pez.iniciar()
 	  leche.iniciar()
@@ -32,7 +39,10 @@ object juego{
 	
 }
 
-object fondo{
+object pantallaInicial{
+	method position() = game.at(0,0)
+	method image()="pasteleriaFinalInicio.jpg"
+	
 	
 }
 

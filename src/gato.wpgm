@@ -3,7 +3,6 @@ import wollok.game.*
 import juegoGato.*
 
 program juegoGato{
-	juego.configurar()
-	juego.iniciar()
+	juego.pantallaInicial()
 	game.start()
 }
