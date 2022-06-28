@@ -9,16 +9,15 @@ object juego{
 	  game.boardGround("pasteleriaFinal.jpg")
 	  game.addVisual(pantallaInicial)
 	  keyboard.s().onPressDo{self.iniciar()}
-	 
 	}
+	
 	method iniciar(){
 	  game.clear()
 	  game.width(17)
 	  game.height(12)
 	  game.cellSize(50)
 	  game.boardGround("pasteleriaFinal.jpg")
-	  game.title("Cathambre")
-	 // game.addVisual(fondo)
+	  game.title("CatGame")
 	  game.addVisualCharacter(gato)
 	  game.addVisual(pizza)
 	  game.addVisual(pez)
@@ -32,8 +31,8 @@ object juego{
 	  pizza.iniciar()
 	  pez.iniciar()
 	  leche.iniciar()
-	  hamburguesa.iniciar()}
-
+	  hamburguesa.iniciar()
+	 }
 	
 	method ganaste(){
 		game.clear()
@@ -43,26 +42,24 @@ object juego{
 	method gameOver(){
 		game.clear()
 		game.addVisual(pantallaGameOver)
-		
 	}
 	
 }
 
-
 object pantallaInicial{
 	method position() = game.at(0,0)
-	method image()="pasteleriaFinalInicio.jpg"
-	
-	
+	method image()="pasteleriaFinalInicio.jpg"	
 }
 
 object pantallaGameOver{
 	method position() = game.at(0,0)
-	method image()="pasteleriaGO.jpg"}
+	method image()="pasteleriaGO.jpg"
+}
 	
 object pantallaGanaste{
 	method position() = game.at(0,0)
-	method image()="pasteleriaGanaste.jpg"}
+	method image()="pasteleriaGanaste.jpg"
+}
 
 
 object gatos{
@@ -151,7 +148,6 @@ class Comida{
 	
 	method posicionInicial()=game.at(x,game.height()-1)
 	
-	
 	method position(){
 		return position
 	}
@@ -162,9 +158,8 @@ class Comida{
 	 
 	method variarVelocidad(){
 	velocidad=velocidad+0.00005
-}
+	}
 
-	
 	method velocidad(){
 		return velocidad
 	}
@@ -173,29 +168,28 @@ class Comida{
 		velocidad=nueva
 	}
 	
-	
 	method iniciar(){
 		position = self.posicionInicial()
 		game.onTick(velocidad,"moverAlimentos",{self.mover()})
 	}
 	
 	method mover(){
-		if (-10<puntaje.puntosTotales() && puntaje.puntosTotales() <20) {
+		if (-100<puntaje.puntosTotales() && puntaje.puntosTotales()<200) {
 		position = position.down(velocidad)
 		self.variarVelocidad()
 		if (position.y() < 0){
 			x=(0..(game.width()-1)).anyOne().roundUp(0)
 			position = self.posicionInicial()
 			
-			}}
-		else
-		
-		{if ( puntaje.puntosTotales()<0){juego.gameOver()}else{juego.ganaste()}
+			}
+		}else{
+			if ( puntaje.puntosTotales()<0){
+				juego.gameOver()
+			}else{
+				juego.ganaste()
+			}
+		}
 	}
-}
-}
-
-object armarComidas{
 	
 }
 

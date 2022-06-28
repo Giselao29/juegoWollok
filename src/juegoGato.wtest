@@ -1,0 +1,13 @@
+import juegoGato.*
+import gato.*
+import wollok.game.*
+
+test "pizza valor" {
+	assert.equals(-10,pizza.valor())
+}
+
+test "gato comer pizza y luego tomar leche"{
+	puntaje.sumarPuntos(pizza)
+	puntaje.sumarPuntos(leche)
+	assert.equals(40,puntaje.puntosTotales())
+}
