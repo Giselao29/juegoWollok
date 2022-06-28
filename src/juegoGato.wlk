@@ -29,15 +29,25 @@ object juego{
 	  keyboard.right().onPressDo{gato.moverDerecha()}
 	  game.onCollideDo(gato,{comida => gato.comer(comida)})
 	
-	
-	
 	  pizza.iniciar()
 	  pez.iniciar()
 	  leche.iniciar()
-	  hamburguesa.iniciar()
+	  hamburguesa.iniciar()}
+
+	
+	method ganaste(){
+		game.clear()
+		game.addVisual(pantallaGanaste)
+	}
+	
+	method gameOver(){
+		game.clear()
+		game.addVisual(pantallaGameOver)
+		
 	}
 	
 }
+
 
 object pantallaInicial{
 	method position() = game.at(0,0)
@@ -45,6 +55,15 @@ object pantallaInicial{
 	
 	
 }
+
+object pantallaGameOver{
+	method position() = game.at(0,0)
+	method image()="pasteleriaGO.jpg"}
+	
+object pantallaGanaste{
+	method position() = game.at(0,0)
+	method image()="pasteleriaGanaste.jpg"}
+
 
 object gatos{
 	
@@ -161,17 +180,20 @@ class Comida{
 	}
 	
 	method mover(){
-		
+		if (-10<puntaje.puntosTotales() && puntaje.puntosTotales() <20) {
 		position = position.down(velocidad)
 		self.variarVelocidad()
 		if (position.y() < 0){
 			x=(0..(game.width()-1)).anyOne().roundUp(0)
 			position = self.posicionInicial()
 			
-			}
+			}}
+		else
+		
+		{if ( puntaje.puntosTotales()<0){juego.gameOver()}else{juego.ganaste()}
 	}
 }
-
+}
 
 object armarComidas{
 	
